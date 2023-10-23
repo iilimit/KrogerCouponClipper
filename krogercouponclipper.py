@@ -16,14 +16,26 @@ driver.get("https://www.kroger.com/savings/cl/mycoupons/")
 time.sleep(5)
 if(driver.current_url == 'https://www.kroger.com/signin?redirectUrl=/savings/cl/mycoupons/'):
     email_box = driver.find_element(By.ID, 'SignIn-emailInput')
+    email_box.click()
+    time.sleep(2)
+    email_box.clear()
+    time.sleep(2)
     email_box.send_keys(creds.email)
     time.sleep(2)
     password_box = driver.find_element(By.ID, 'SignIn-passwordInput')
+    password_box.clear()
     password_box.send_keys(creds.password)
     
     remember_me_box = driver.find_element(By.ID, 'SignIn-rememberMe')
     time.sleep(2)
     if(remember_me_box.is_selected() == False):
         remember_me_box.click()
-    sign_in_button = driver.find_element(By.ID, 'SignIn-submitButton')
-    sign_in_button.click()
+    driver.find_element(By.ID, 'SignIn-submitButton').click()
+    # sign_in_button
+
+
+# Scrolls to bottom of the page to load all coupons
+for i  in range(0,6):
+    time.sleep(5)
+    driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+
