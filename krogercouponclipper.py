@@ -7,9 +7,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import creds
+import platform
 
+
+platform = platform.system()
+service = None
 options = Options()
-service = Service(executable_path="B:\\Code Projects\\chromedriver.exe")
+if(platform == 'Darwin'):
+    service = Service(
+    executable_path="macOS/chromedriver")
+elif (platform == 'Windows'):
+    service = Service(executable_path="windows/chromedriver.exe")
+
 options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
 driver = webdriver.Chrome(service=service, options=options)
 driver.get("https://www.kroger.com/savings/cl/mycoupons/")
