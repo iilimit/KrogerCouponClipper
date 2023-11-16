@@ -9,7 +9,7 @@ import time
 import creds
 import platform
 
-
+#start up commands
 platform = platform.system()
 service = None
 options = Options()
@@ -24,7 +24,7 @@ driver = webdriver.Chrome(service=service, options=options)
 driver.get("https://www.kroger.com/savings/cl/mycoupons/")
 time.sleep(5)
 
-
+#logins to account if not already
 if(driver.current_url == 'https://www.kroger.com/signin?redirectUrl=/savings/cl/mycoupons/'):
     email_box = driver.find_element(By.ID, 'SignIn-emailInput')
     email_box.click()
@@ -47,11 +47,14 @@ if(driver.current_url == 'https://www.kroger.com/signin?redirectUrl=/savings/cl/
         remember_me_box.click()
     driver.find_element(By.ID, 'SignIn-submitButton').click()
 
-time.sleep(5)
-
-#ALL COUPONS BTN
+#Clicks ALL COUPONS button
 driver.find_element(By.XPATH, "//button[starts-with(@id, 'Tabs-tab-')]").click()
+time.sleep(3)
 
+#gets elements
+search_bar = driver.find_element(By.XPATH, '//*[@id="content"]/section/div/section[2]/section/section/div/div[1]/div/div[2]/div[1]/div/input')
+coupon_value_str = driver.find_element(By.XPATH, '//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/span').text
+amount_of_coupons = [int(x) for x in coupon_value_str.split() if x.isdigit()] 
 
 # Keeps scrolling until all items are loaded
 last_height = driver.execute_script("return document.body.scrollHeight")
@@ -66,11 +69,13 @@ while True:
         break
     last_height = new_height
 
-#Number of coupons
-coupon_value_str = driver.find_element(By.XPATH, '//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/span').text
-amount_of_coupons = [int(x) for x in coupon_value_str.split() if x.isdigit()] 
+#scrolls back to top of page
+driver.execute_script("arguments[0].scrollIntoView();", search_bar)
+time.sleep(3)
 
-#clicks 'clip' buttons
+# clicks 'clip' buttons
 for j in range(1,int(amount_of_coupons[0])):
-    time.sleep(0.2)
-    driver.find_element(By.XPATH,f'//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/div/div/div/ul/li[{j}]/div/div/div/div[2]/div[3]/button[2]')
+    time.sleep(0.5)
+    driver.find_element(By.XPATH,f'//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/div/div/div/ul/li[{j}]/div/div/div/div[2]/div[3]/button[2]').click()
+
+    
