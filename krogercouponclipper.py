@@ -29,7 +29,7 @@ if(driver.current_url == 'https://www.kroger.com/signin?redirectUrl=/savings/cl/
     email_box = driver.find_element(By.ID, 'SignIn-emailInput')
     email_box.click()
     time.sleep(2)
-    email_box.clear()
+    email_box.send_keys(Keys.chord(Keys.CONTROL,"a", Keys.DELETE))
     time.sleep(2)
     email_box.send_keys(creds.email)
     time.sleep(2)
@@ -48,6 +48,7 @@ if(driver.current_url == 'https://www.kroger.com/signin?redirectUrl=/savings/cl/
     driver.find_element(By.ID, 'SignIn-submitButton').click()
 
 #Clicks ALL COUPONS button
+time.sleep(3)
 driver.find_element(By.XPATH, "//button[starts-with(@id, 'Tabs-tab-')]").click()
 time.sleep(3)
 
