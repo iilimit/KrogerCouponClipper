@@ -23,6 +23,7 @@ elif (platform == 'Windows'):
 
 options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
 driver = webdriver.Chrome(service=service, options=options)
+wait = WebDriverWait(driver, 10)
 driver.get("https://www.kroger.com/savings/cl/mycoupons/")
 time.sleep(5)
 
@@ -50,9 +51,13 @@ if(driver.current_url == 'https://www.kroger.com/signin?redirectUrl=/savings/cl/
     driver.find_element(By.ID, 'SignIn-submitButton').click()
 
 #Clicks ALL COUPONS button
-time.sleep(3)
-driver.find_element(By.XPATH, "//button[starts-with(@id, 'Tabs-tab-')]").click()
-time.sleep(3)
+# time.sleep(3)
+try:
+    all_coupons_tab = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[starts-with(@id, 'Tabs-tab-')]")))
+    all_coupons_tab.click()
+    time.sleep(3)
+except NoSuchElementException:
+    print("Element cannot be found")
 
 #gets elements
 search_bar = driver.find_element(By.XPATH, '//*[@id="content"]/section/div/section[2]/section/section/div/div[1]/div/div[2]/div[1]/div/input')
