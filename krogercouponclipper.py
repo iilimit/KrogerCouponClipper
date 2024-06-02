@@ -5,6 +5,8 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+from colorama import Fore, init
 import time
 import creds
 import platform
@@ -76,7 +78,15 @@ time.sleep(3)
 
 # clicks 'clip' buttons
 for j in range(1,int(amount_of_coupons[0])):
-    time.sleep(0.5)
-    driver.find_element(By.XPATH,f'//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/div/div/div/ul/li[{j}]/div/div/div/div[2]/div[3]/button[2]').click()
+    try:
+        time.sleep(0.5)
+        driver.find_element(By.XPATH,f'//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/div/div/div/ul/li[{j}]/div/div/div/div[2]/div[3]/button[2]').click()
+        max_coupon_label = driver.find_element(By.XPATH, f'//*[@id="content"]/section/div/section[2]/section/section/div/div[2]/div[2]/div/div/div/ul/li[{j}]/div/div/div/div[2]/div[2]/span')
+        if(max_coupon_label.is_displayed()):
+            print(Fore.GREEN + 'The max clipped coupons has been reached')        
+            break
+    except NoSuchElementException:
+        continue
+
 
     
